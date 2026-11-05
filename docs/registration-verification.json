@@ -1,0 +1,95 @@
+{
+  "bundle_sha256": "d999c9ee100e5f40cf58cba80594c7db15c793973d2259dc0480a537a1a16350",
+  "cases": [
+    {
+      "preexisting": [],
+      "imports": [
+        {
+          "loaded": true
+        },
+        {
+          "loaded": true
+        }
+      ],
+      "state": {
+        "bothDefined": true,
+        "preserved": true,
+        "catalog": [
+          "unrelated-card",
+          "weather-chart-card"
+        ]
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "preexisting": [
+        "weather-chart-card"
+      ],
+      "imports": [
+        {
+          "loaded": true
+        },
+        {
+          "loaded": true
+        }
+      ],
+      "state": {
+        "bothDefined": true,
+        "preserved": true,
+        "catalog": [
+          "unrelated-card"
+        ]
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "preexisting": [
+        "weather-chart-card-editor"
+      ],
+      "imports": [
+        {
+          "loaded": true
+        },
+        {
+          "loaded": true
+        }
+      ],
+      "state": {
+        "bothDefined": true,
+        "preserved": true,
+        "catalog": [
+          "unrelated-card",
+          "weather-chart-card"
+        ]
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "preexisting": [
+        "weather-chart-card",
+        "weather-chart-card-editor"
+      ],
+      "imports": [
+        {
+          "loaded": true
+        },
+        {
+          "loaded": true
+        }
+      ],
+      "state": {
+        "bothDefined": true,
+        "preserved": true,
+        "catalog": [
+          "unrelated-card"
+        ]
+      },
+      "pageErrors": [],
+      "passed": true
+    }
+  ],
+  "passed": true
+}

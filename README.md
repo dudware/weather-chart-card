@@ -31,27 +31,48 @@ These are genuine screenshots from an isolated HASS instance using **synthetic w
 
 ## Installation and updates
 
-Supported baseline for this maintained release: **Home Assistant 2026.10.2 or newer** with HACS. The card/editor have been exercised on 2026.10.2 in Chromium; older frontends are not verified. A weather entity with daily and/or hourly forecast support is required. Solar times are optional and use `sun.sun` when available.
+Supported baseline: **Home Assistant 2026.10.2 or newer**. Use HACS on 2026.10; starting with **2026.11**, HACS becomes the built-in **Settings → Marketplace**, using the same catalog and `hacs.json`. The card/editor have been exercised on 2026.10.2 in Chromium; the 2026.11 Marketplace instructions below follow the official documentation and are not a claim of testing that release. A weather entity with daily and/or hourly forecast support is required. Solar times are optional and use `sun.sun` when available.
 
-### Normal HACS GUI installation
+### Find the maintained card in the catalog
 
-This fork can be installed as a **custom repository**. A request for default-registry inclusion does not itself make a repository a HACS default.
+Open **Settings → Marketplace** on Home Assistant 2026.11+, or **HACS** on 2026.10. Search for **Weather Chart Card** and verify that the repository owner is **tomtom13** before installing; other forks share similar names. Select **Install** (Marketplace) or **Download** (HACS), choose the stable release, and reload your browser. Then edit a dashboard → **Add card → Weather Chart Card**.
 
-1. Open **HACS** in HASS, then its top-right menu → **Custom repositories**.
+**Catalog status:** [our catalog submission](https://github.com/hacs/default/pull/12560) is pending review. Until it is merged and appears in search, use the normal add-from-link/custom-repository path below. We do not claim inclusion before acceptance.
+
+[![Open this repository in your Home Assistant](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=tomtom13&repository=weather-chart-card&category=plugin)
+
+This cross-version link opens HACS before 2026.11 and Marketplace thereafter. It does not bypass installation confirmation or the Marketplace warning.
+
+### Home Assistant 2026.11+ — Marketplace add from link
+
+1. Open **Settings → Marketplace** as an administrator and accept its community-content warning if prompted.
+2. Select **Add from link** and enter `https://github.com/tomtom13/weather-chart-card`.
+3. Select **Add**. If asked for a type, select **Dashboard**. Adding a custom repository requires connecting GitHub through the normal device sign-in flow; browsing/installing catalog content does not require that connection.
+4. Open the repository page, verify owner **tomtom13**, then choose **Install**, review the version, and confirm **Install**.
+5. Reload your browser/kiosk, then add the card through the dashboard editor.
+
+### Home Assistant 2026.10 — HACS custom repository
+
+1. Open **HACS**, then its top-right menu → **Custom repositories**.
 2. Add `https://github.com/tomtom13/weather-chart-card` with category **Dashboard** (called **Lovelace/Frontend** in older HACS versions).
-3. Find **Weather Chart Card**, open it and choose **Download**. Select the latest stable release for normal use.
-4. Reload the browser when HACS asks. On a cached kiosk, reload that browser as well.
-5. Edit a dashboard → **Add card** → **Weather Chart Card**. Select your weather entity and save the card and dashboard.
+3. Find **Weather Chart Card**, verify owner **tomtom13**, open it and choose **Download**. Select the latest stable release.
+4. Reload the browser/kiosk, then add the card through the dashboard editor.
 
-HACS normally registers the JavaScript module resource. If the card is not recognized, check **Settings → Dashboards → Resources** (advanced mode may be needed) for `/hacsfiles/weather-chart-card/weather-chart-card.js`, type **JavaScript module**. Add it there only if missing; do not add a second copy.
+Both managers normally register the JavaScript module resource automatically. Marketplace uses `/local/community/weather-chart-card/weather-chart-card.js` with a version query; HACS uses `/hacsfiles/weather-chart-card/weather-chart-card.js`. The legacy `/hacsfiles/` path remains compatible after migration. If the card is not recognized, check **Settings → Dashboards → Resources** for a single entry of type **JavaScript module**. Add it only if missing; when resources are YAML-managed, follow the manager's install dialog. Do not register both paths.
+
+Upgrading from HACS to 2026.11 automatically carries installed content, custom repositories and update entities into Marketplace. Do not install HACS again on 2026.11. See the [official migration documentation](https://www.hacs.xyz/docs/marketplace/) and [Marketplace user guide](https://next.home-assistant.io/integrations/marketplace/).
 
 ### Moving from another fork / original installation
 
-All forks using `custom:weather-chart-card` register the same browser element. Do **not** load two implementations together. Back up your card YAML, remove the old Weather Chart Card installation/repository through HACS, remove only its obsolete resource entry if one remains, then install this fork through the GUI above. Existing card type/entity YAML can be retained. Finish with a full browser/kiosk reload. Do not remove unrelated dashboard cards or resources.
+All forks using `custom:weather-chart-card` share browser element names, and repositories with the same name share an installation folder. Marketplace refuses to install two repositories into that same folder. This fork guards both card/editor registration and adds its card-picker entry only when its own card definition succeeds, so loading it after an existing definition does not throw. **The first registered implementation remains active**; this safeguard is not a supported way to combine forks or to force replacement.
+
+Back up your card YAML. In Marketplace use **Uninstall** for the old repository, or HACS **Remove**, then remove only its obsolete resource entry if one remains. Install this fork through the normal GUI above. Retain existing card type/entity YAML and finish with a full browser/kiosk reload. Do not remove unrelated dashboard cards or resources.
 
 ### Updates and rollback
 
-Use the normal HACS **Update/Redownload** dialog and reload the frontend. No SSH, copied files, hidden scripts, or live source mounts are required. To roll back, use the same HACS dialog to select an earlier published version, then reload. Each card’s configuration is independent; updating the package does not copy one card’s settings to another.
+On 2026.11+, use **Settings → Updates** to read release notes and update the card, then reload the browser. Marketplace's **Install another version** selects an alternative version, but the official guide says to **restore a backup for rollback**, rather than use that dialog to undo an update. Preserve a backup before upgrading.
+
+On 2026.10, use HACS **Update/Redownload** and reload the frontend; its version dialog can select an earlier published release. No SSH, copied files, hidden scripts, or live source mounts are required. Each card's configuration is independent; updating the package does not copy one card's settings to another.
 
 ## First card and visual configurator
 

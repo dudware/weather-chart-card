@@ -1209,7 +1209,9 @@ class WeatherChartCardEditor extends s {
     `;
   }
 }
-customElements.define('weather-chart-card-editor', WeatherChartCardEditor);
+if (!customElements.get('weather-chart-card-editor')) {
+  customElements.define('weather-chart-card-editor', WeatherChartCardEditor);
+}
 
 /**
  * @license
@@ -19062,13 +19064,14 @@ renderLastUpdated() {
   }
 }
 
-customElements.define('weather-chart-card', WeatherChartCard);
-
-window.customCards = window.customCards || [];
-window.customCards.push({
-  type: "weather-chart-card",
-  name: "Weather Chart Card",
-  description: "A custom weather card with chart.",
-  preview: true,
-  documentationURL: "https://github.com/tomtom13/weather-chart-card",
-});
+if (!customElements.get('weather-chart-card')) {
+  customElements.define('weather-chart-card', WeatherChartCard);
+  window.customCards = window.customCards || [];
+  window.customCards.push({
+    type: "weather-chart-card",
+    name: "Weather Chart Card",
+    description: "A custom weather card with chart.",
+    preview: true,
+    documentationURL: "https://github.com/tomtom13/weather-chart-card",
+  });
+}

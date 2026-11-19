@@ -55,6 +55,7 @@ export const FORECAST_FIELDS = [
   bool('round_temp', 'Round forecast temperatures', false),
   bool('disable_animation', 'Disable chart animation', false),
   number('number_of_forecasts', 'Forecast points (0 = automatic)', 0, 0),
+  number('hours_per_point', 'Hours per forecast point (hourly only; 2 = two-hour steps)', 1, 1, 6),
   number('chart_height', 'Chart height (px)', 180),
   number('labels_font_size', 'Temperature/precipitation label baseline (px)', 11),
   number('precip_bar_size', 'Precipitation bar width (%)', 100, 0, 100),

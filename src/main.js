@@ -1,5 +1,6 @@
 import locale from './locale.js';
 import { normaliseSizeOffsets } from './size-options.js';
+import { aggregateForecast, hoursPerPoint } from './aggregate.js';
 import { convertWindSpeed, WIND_SPEED_UNITS } from './wind.js';
 import { convertTemperature, convertPressure, convertVisibility, numericValue, PRESSURE_UNITS } from './measurements.js';
 import {
@@ -129,6 +130,7 @@ setConfig(config) {
       round_temp: false,
       type: 'daily',
       number_of_forecasts: '0',
+      hours_per_point: 1,
       '12hourformat': false,
       ...config.forecast,
     },
@@ -543,7 +545,8 @@ drawChart({ config, language, weather, forecastItems } = this) {
     precipMax = 100;
   } else {
     if (config.forecast.type === 'hourly') {
-      precipMax = lengthUnit === 'km' ? 4 : 1;
+      // Amounts are summed per point, so the axis grows with the bucket size.
+      precipMax = (lengthUnit === 'km' ? 4 : 1) * hoursPerPoint(config.forecast);
     } else {
       precipMax = lengthUnit === 'km' ? 20 : 1;
     }
@@ -832,6 +835,9 @@ selectedForecasts() {
     const now = Date.now();
     forecast = forecast.filter(item => Number.isFinite(Date.parse(item.datetime)) && now - Date.parse(item.datetime) <= cutoff);
   }
+  // Group hourly items into N-hour points before counting points, so
+  // number_of_forecasts keeps meaning "columns on the chart".
+  forecast = aggregateForecast(forecast, hoursPerPoint(this.config.forecast));
   return forecast.slice(0, Math.max(0, Number(this.forecastItems) || 0));
 }
 

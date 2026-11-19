@@ -171,6 +171,7 @@ The card requires top-level `type: custom:weather-chart-card`. The remaining Mai
 | `forecast.round_temp` | boolean | `false` | Round forecast temperature labels to whole degrees rather than one decimal place. |
 | `forecast.disable_animation` | boolean | `false` | Disable chart animation; recommended for e-paper captures and low-power kiosks. |
 | `forecast.number_of_forecasts` | number | `0` | Maximum visible point count. `0` chooses a count from available card width/font size. A positive integer overrides that fit. Limited to actual provider entries; 14 cannot turn a seven-day feed into two weeks. |
+| `forecast.hours_per_point` | number | `1` | Hourly only. Groups this many consecutive hours (1–6) into one chart point, aligned to local hours divisible by the value (e.g. 06, 08, 10 for `2`). Per point: mean temperature, humidity and wind speed; summed precipitation; maximum gust, UV and precipitation probability; speed-weighted circular mean wind bearing; the most significant condition (a one-hour shower is not hidden by a cloudy hour). `number_of_forecasts` counts grouped points, so `hours_per_point: 2` with `number_of_forecasts: 9` covers 18 hours — a whole waking day on one screen. |
 | `forecast.chart_height` | number | `180` | Forecast canvas height in CSS px. Does not include the header, condition icons or wind row. |
 | `forecast.labels_font_size` | number | `11` | Baseline in CSS px for high/low temperature and precipitation labels; not the day/hour tick labels. |
 | `forecast.precip_bar_size` | number | `100` | Precipitation bar width as a percentage of a column, from 0 to 100. |
@@ -183,6 +184,17 @@ The card requires top-level `type: custom:weather-chart-card`. The remaining Mai
 Daily forecasts can include high and low lines; missing low-temperature data cannot produce a meaningful low line. Hourly ticks show hours only, using the existing `use_12hour_format` setting: 24-hour mode shows `13`, `14`, `15`; 12-hour mode shows plain `1`, `2`, `3` with a shared AM/PM marker in the upper row at the first point and each half-day transition. Midnight combines its date and AM marker on that same row. Both rows remain reserved so the plot never shifts. Header clocks and tooltip times retain their normal formatting. Dates/times use the **browser’s timezone**, including the browser used by a kiosk renderer; this card has no independent timezone override.
 
 The hourly chart labels every displayed forecast entry and retains one regularly spaced column per entry. It does not silently show only alternate hours. Use automatic forecast count (`number_of_forecasts: 0`) or reduce an explicit count if a small card is crowded; the grid remains independent of text placement.
+
+To see the rest of the day on one compact chart, combine an hourly card with two-hour points:
+
+```yaml
+type: custom:weather-chart-card
+entity: weather.home
+forecast:
+  type: hourly
+  hours_per_point: 2
+  number_of_forecasts: 9
+```
 
 ### Layout options — Layout page
 
